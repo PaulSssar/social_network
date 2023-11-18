@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+  Панель управления
+{% endblock %}
+{% block content %}
+  <h1>Панель управления</h1>
+  <p>
+    Добро пожаловать в Вашу панель управления!
+    {% with total_image_create=request.user.image_created.count %}
+    Всего Вы добавили {{ total_image_create }}.
+    {% endwith %}
+  </p>
+  <p>
+    Добавьте эту <a href="javascript:{% include 'bookmarklet_launcher.js' %}" class="button">кнопку</a>
+    чтобы скачивать изображения.
+  </p>
+  <p>
+    Вы можете <a href="{% url 'edit' %}">отредактировать</a> свой профиль,
+    а так же <a href="{% url 'password_change' %}">изменить пароль</a>.
+  </p>
+{% endblock %}
