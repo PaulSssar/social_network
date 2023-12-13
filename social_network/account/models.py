@@ -20,3 +20,38 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'Профиль пользователя {self.user}'
+
+
+class Contact(models.Model):
+    user_from = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='contact_from'
+    )
+    user_to = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='contact_to'
+    )
+    created = models.DateTimeField(
+        'Дата',
+        auto_now_add=True
+    )
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['-created', ])
+        ]
+        ordering = ('-created', )
+
+    def __str__(self):
+        return f'{self.user_from} подписался на {self.user_to}'
+
+
+User.add_to_class('following',
+                  models.ManyToManyField(
+                      'self',
+                      through=Contact,
+                      related_name='followers',
+                      symmetrical=False
+                  ))
